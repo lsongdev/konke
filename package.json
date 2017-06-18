@@ -4,5 +4,9 @@
   "main": "index.js",
   "repository": "git@github.com:song940/konke.git",
   "author": "Lsong <song940@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "co": "^4.6.0",
+    "superagent": "^3.5.2"
+  }
 }
