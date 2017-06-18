@@ -26,11 +26,13 @@ co(function*(){
 
   const user = yield konke.user();
 
+  konke.user_id = user.userid;
+
   const devices = yield konke.devices(user.userid);
 
-  const k = new KonKe.K(konke, user, devices[0]);
+  konke.device_id = devices[0].kid;
 
-  yield k.power('close');
+  console.log(yield konke.power('open'));
 
 });
 
