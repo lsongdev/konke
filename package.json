@@ -7,6 +7,10 @@
   "license": "MIT",
   "dependencies": {
     "co": "^4.6.0",
+    "kelp": "^1.0.5",
+    "kelp-body": "^1.4.0",
+    "kelp-cookie": "^1.0.4",
+    "kelp-send": "^1.0.3",
     "superagent": "^3.5.2"
   }
 }
