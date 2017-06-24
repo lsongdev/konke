@@ -142,8 +142,6 @@ app.use(route('get', '/:deviceId', co(function*(req, res, next) {
   if(!device) return ;
   Object.assign(device, yield konke.getKInfo(user.userid, device.kid));
   const state = yield konke.getKState(user.userid, device.kid);
-  const modules = yield konke.getKElectricityByMonth(user.userid, device.kid);
-  console.log(modules)
   res.render(`
     <h2>${device.device_name}</h2>
     <p>${device.device_mac}</p>
@@ -154,6 +152,7 @@ app.use(route('get', '/:deviceId', co(function*(req, res, next) {
     <form method="post" >
       <select name="command" >
         <option value="doSwitchK" >power</option>
+        <option value="switchKLight" >led</option>
       </select>
       <input name="params" />
       <button type="submit">execute</button>

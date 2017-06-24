@@ -2,7 +2,9 @@ const URI     = require('url');
 const qs      = require('querystring');
 const request = require('superagent');
 const EventEmitter = require('events');
-
+/**
+ * KonKe
+ */
 class KonKe extends EventEmitter {
   /**
    * [parse description]
@@ -54,7 +56,6 @@ class KonKe extends EventEmitter {
       })
     ].join('?');
   }
-
 
   /**
    * [refresh description]
@@ -174,7 +175,7 @@ class KonKe extends EventEmitter {
   getKInfo(userid, kid){
     return this.exec('/User/getKInfo', { 
       userid, kid 
-    }).then(k => k.data);
+    }).then(res => res.data);
   }
 
   /**
@@ -186,7 +187,7 @@ class KonKe extends EventEmitter {
   getKState(userid, kid){
     return this.exec('/KInfo/getKState', { 
       userid, kid: kid 
-    }).then(k => k.data);
+    }).then(res => res.data);
   }
 
   /**
