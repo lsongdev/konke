@@ -9,16 +9,9 @@
   "author": "Lsong <song940@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "co": "^4.6.0",
-    "kelp": "^1.0.5",
-    "kelp-body": "^1.4.0",
-    "kelp-co": "^1.0.0",
-    "kelp-cookie": "^1.0.4",
-    "kelp-route": "^2.0.0",
-    "kelp-send": "^1.0.3",
     "superagent": "^3.5.2"
   },
-  "description": ">",
+  "description": "konke sdk for node.js",
   "bugs": {
     "url": "https://github.com/song940/konke/issues"
   },
@@ -28,7 +21,12 @@
     "example": "example"
   },
   "devDependencies": {
-    "mocha": "^3.4.2"
+    "kelp": "^1.0.5",
+    "kelp-body": "^1.4.0",
+    "kelp-co": "^1.0.0",
+    "kelp-cookie": "^1.0.4",
+    "kelp-route": "^2.0.0",
+    "kelp-send": "^1.0.3"
   },
   "scripts": {
     "start": "node example/example"

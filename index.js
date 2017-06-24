@@ -6,6 +6,12 @@ const EventEmitter = require('events');
  * KonKe
  */
 class KonKe extends EventEmitter {
+  static get REMOTE_TYPE(){
+    return {
+      IR: 1,
+      RF: 2,
+    }
+  }
   /**
    * [parse description]
    * @param  {[type]} response [description]
@@ -320,7 +326,7 @@ class KonKe extends EventEmitter {
       userid, kid
     }).then(res => res.data);
   }
- 
+
   /**
    * 获取普通遥控器列表
    * @param  {[type]} userid [description]
@@ -333,10 +339,10 @@ class KonKe extends EventEmitter {
   }
   /**
    * 发送普通遥控器指令
-   * @param  {[type]} userid     [description]
-   * @param  {[type]} kid        [description]
-   * @param  {[type]} remoteType [description]
-   * @param  {[type]} order      [description]
+   * @param  {[type]} userid     userId
+   * @param  {[type]} kid        deviceId
+   * @param  {[type]} remoteType [1]
+   * @param  {[type]} order      [rc_1498303352#1498303616]
    * @return {[type]}            [description]
    */
   sendGeneralRemoteOrder(userid, kid, remoteType, order){

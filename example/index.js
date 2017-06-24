@@ -130,6 +130,13 @@ app.use(route('get', '/', (req, res) => {
     </ul>`);
 }));
 
+app.use(route('get', '/logout', (req, res) => {
+  res.cookie('access_token', 'xx', {
+    expires: new Date
+  });
+  res.redirect('/');
+}));
+
 app.use(route('/:deviceId', (req, res, next) => {
   const { user, devices, params } = req;
   const kid = params.deviceId;
@@ -142,6 +149,8 @@ app.use(route('get', '/:deviceId', co(function*(req, res, next) {
   if(!device) return ;
   Object.assign(device, yield konke.getKInfo(user.userid, device.kid));
   const state = yield konke.getKState(user.userid, device.kid);
+  const remote = yield konke.getGeneralRemoteList(user.userid, device.kid);
+
   res.render(`
     <h2>${device.device_name}</h2>
     <p>${device.device_mac}</p>
@@ -153,6 +162,7 @@ app.use(route('get', '/:deviceId', co(function*(req, res, next) {
       <select name="command" >
         <option value="doSwitchK" >power</option>
         <option value="switchKLight" >led</option>
+        <option value="sendGeneralRemoteOrder" >remote control</option>
       </select>
       <input name="params" />
       <button type="submit">execute</button>
@@ -165,6 +175,7 @@ app.use(route('post', '/:deviceId', co(function*(req, res){
   const { user, device, konke, body } = req;
   let { command, params } = body;
   params = [ user.userid, device.kid ].concat(params.split(','));
+  console.log(params);
   const result = yield konke[ command ].apply(konke, params);
   res.render(`
     <p>${result.des}</p>
