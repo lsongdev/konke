@@ -1,6 +1,6 @@
 ## konke [![konke](https://img.shields.io/npm/v/konke.svg)](https://npmjs.org/konke)
 
-> konke sdk for node.js
+> [konke](http://ikonke.com) sdk for node.js
 
 ### Installation
 
