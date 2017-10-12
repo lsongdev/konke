@@ -1,6 +1,5 @@
 const http   = require('http');
 const kelp   = require('kelp');
-const co     = require('kelp-co');
 const send   = require('kelp-send');
 const body   = require('kelp-body');
 const route  = require('kelp-route');
@@ -32,9 +31,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   const { access_token } = req.cookies;
   req.konke = new KonKe({ access_token });
-  req.konke.checkAccessToken().then(k => {
-    next();
-  }, e => res.redirect(konke.authorize(url)));
+  req.konke.checkAccessToken().then(next, e => res.redirect(konke.authorize(url)));
 });
 
 app.use((req, res, next) => {
@@ -144,12 +141,12 @@ app.use(route('/:deviceId', (req, res, next) => {
   next();
 }));
 
-app.use(route('get', '/:deviceId', co(function*(req, res, next) {
+app.use(route('get', '/:deviceId', async (req, res, next) => {
   const { user, device, konke } = req;
   if(!device) return ;
-  Object.assign(device, yield konke.getKInfo(user.userid, device.kid));
-  const state = yield konke.getKState(user.userid, device.kid);
-  const remote = yield konke.getGeneralRemoteList(user.userid, device.kid);
+  Object.assign(device, await konke.getKInfo(user.userid, device.kid));
+  const state = await konke.getKState(user.userid, device.kid);
+  const remote = await konke.getGeneralRemoteList(user.userid, device.kid);
 
   res.render(`
     <h2>${device.device_name}</h2>
@@ -166,17 +163,14 @@ app.use(route('get', '/:deviceId', co(function*(req, res, next) {
       </select>
       <input name="params" />
       <button type="submit">execute</button>
-    </form>
+    </form>`);
+}));
 
-  `);
-})));
-
-app.use(route('post', '/:deviceId', co(function*(req, res){
+app.use(route('post', '/:deviceId', async (req, res) => {
   const { user, device, konke, body } = req;
   let { command, params } = body;
   params = [ user.userid, device.kid ].concat(params.split(','));
-  console.log(params);
-  const result = yield konke[ command ].apply(konke, params);
+  const result = await konke[ command ].apply(konke, params);
   res.render(`
     <p>${result.des}</p>
     <script>
@@ -185,6 +179,6 @@ app.use(route('post', '/:deviceId', co(function*(req, res){
       }, 2000);
     </script>
   `);
-})));
+}));
 
 http.createServer(app).listen(3000);
