@@ -1,4 +1,5 @@
-const http   = require('http');
+const fs     = require('fs');
+const https  = require('https');
 const kelp   = require('kelp');
 const send   = require('kelp-send');
 const body   = require('kelp-body');
@@ -17,7 +18,7 @@ app.use(send);
 app.use(body);
 app.use(cookie);
 
-const url = 'http://konke.dev:3000';
+const url = 'https://konke.dev:3000';
 
 app.use((req, res, next) => {
   const { code } = req.query;
@@ -147,7 +148,6 @@ app.use(route('get', '/:deviceId', async (req, res, next) => {
   Object.assign(device, await konke.getKInfo(user.userid, device.kid));
   const state = await konke.getKState(user.userid, device.kid);
   const remote = await konke.getGeneralRemoteList(user.userid, device.kid);
-
   res.render(`
     <h2>${device.device_name}</h2>
     <p>${device.device_mac}</p>
@@ -181,4 +181,9 @@ app.use(route('post', '/:deviceId', async (req, res) => {
   `);
 }));
 
-http.createServer(app).listen(3000);
+https.createServer({
+  key : fs.readFileSync(__dirname + '/konke.key'),
+  cert: fs.readFileSync(__dirname + '/konke.crt'),
+}, app).listen(3000, () => {
+  console.log('server is running at https://konke.dev:3000');
+});
