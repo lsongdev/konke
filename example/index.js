@@ -5,6 +5,7 @@ const send   = require('kelp-send');
 const body   = require('kelp-body');
 const route  = require('kelp-route');
 const cookie = require('kelp-cookie');
+const logger = require('kelp-logger');
 const KonKe  = require('..');
 
 const konke = new KonKe({
@@ -17,39 +18,46 @@ const app = kelp();
 app.use(send);
 app.use(body);
 app.use(cookie);
+app.use(logger);
 
 const url = 'https://konke.dev:3000';
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   const { code } = req.query;
   if(!code) return next();
-  konke.accessToken(code, url).then(token => {
-    res.cookie('access_token', token.access_token);
+  const token = await konke.accessToken(code, url)
+  if(token.result == 0){
+    res.cookie('access_token', token.access_token, {
+      maxAge: token.expires_in * 1000
+    });
     res.redirect('/');
-  }).catch(err => res.send(err));
+  }else{
+    console.error('[Konke] accessToken:', token);
+  }
 });
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   const { access_token } = req.cookies;
-  req.konke = new KonKe({ access_token });
-  req.konke.checkAccessToken().then(next, e => res.redirect(konke.authorize(url)));
+  try{
+    req.konke = new KonKe({ access_token });
+    await req.konke.checkAccessToken();
+    next();
+  }catch(e){
+    res.redirect(konke.authorize(url));
+    console.error('[Konke] checkAccessToken:', e);
+  }
 });
 
-app.use((req, res, next) => {
-  req.konke.user().then(user => {
-    req.user = user;
-    next();
-  });
+app.use(async (req, res, next) => {
+  req.user = await req.konke.user();
+  // console.log('current user:', req.user);
+  next();
 });
 
-app.use((req, res, next) => {
-  req
-  .konke
-  .getKList(req.user.userid)
-  .then(devices => {
-    req.devices = devices;
-    next();
-  });
+app.use(async (req, res, next) => {
+  const { user } = req;
+  req.devices = await req.konke.getKList(user.userid);
+  next();
 });
 
 app.use((req, res, next) => {
@@ -129,9 +137,7 @@ app.use(route('get', '/', (req, res) => {
 }));
 
 app.use(route('get', '/logout', (req, res) => {
-  res.cookie('access_token', 'xx', {
-    expires: new Date
-  });
+  res.cookie('access_token', 'xx', { expires: new Date });
   res.redirect('/');
 }));
 
@@ -185,5 +191,5 @@ https.createServer({
   key : fs.readFileSync(__dirname + '/konke.key'),
   cert: fs.readFileSync(__dirname + '/konke.crt'),
 }, app).listen(3000, () => {
-  console.log('server is running at https://konke.dev:3000');
+  console.log('server is running at', url);
 });

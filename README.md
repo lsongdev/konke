@@ -5,7 +5,7 @@
 ### Installation
 
 ```bash
-$ npm install konke
+$ npm install konke --save
 ```
 
 ### Example
@@ -16,10 +16,10 @@ const konke = new KonKe({
 });
 
 konke.sendGeneralRemoteOrder(
-  "song940@163.com",
-  "d5d7c8f3-43d7-44cc-a62d-261f882eb2a2",
-  KonKe.REMOTE_TYPE.IR,
-  "rc_1498303352#1498303616"
+  "song940@163.com", // user id
+  "d5d7c8f3-43d7-44cc-a62d-261f882eb2a2", // device id
+  KonKe.REMOTE_TYPE.IR, // remote type
+  "rc_1498303352#1498303616" // remote command
 ).then(result => {
   console.log(result);
 });

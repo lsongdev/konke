@@ -21,10 +21,6 @@ browser-stdout@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/browser-stdout/-/browser-stdout-1.3.0.tgz#f351d32969d32fa5d7a5567154263d928ae3bd1f"
 
-co@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
-
 combined-stream@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/combined-stream/-/combined-stream-1.0.5.tgz#938370a57b4a51dea2c77c15d5c5fdf895164009"
@@ -149,15 +145,13 @@ kelp-body@^1.4.0:
   dependencies:
     mail2 latest
 
-kelp-co@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/kelp-co/-/kelp-co-1.0.0.tgz#3d49d067b4f3bec54e39086e5240bc927359aa67"
-  dependencies:
-    co "^4.6.0"
-
 kelp-cookie@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/kelp-cookie/-/kelp-cookie-1.0.4.tgz#5fe26d4e2999bcdb327ba78f273a01a476a8ad0b"
+
+kelp-logger@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/kelp-logger/-/kelp-logger-1.1.0.tgz#08e83e67ac42997b55a6560a78f5888e2c90426d"
 
 kelp-route@^2.0.0:
   version "2.0.0"
@@ -260,7 +254,7 @@ mkdirp@0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mocha@^3.2.0, mocha@^3.4.2:
+mocha@^3.2.0:
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/mocha/-/mocha-3.4.2.tgz#d0ef4d332126dbf18d0d640c9b382dd48be97594"
   dependencies:
