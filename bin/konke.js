@@ -1,4 +1,5 @@
-const co       = require('co');
+#!/usr/bin/env node
+
 const KonKe    = require('..');
 const readline = require('readline');
 
@@ -12,27 +13,6 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-co(function*(){
-  
-  const url = 'https://lsong.org';
-
-  console.log(konke.authorize(url));
-
-  const code = yield waitingForInput('Input code here :> ');
-
-  const token = yield konke.access_token(code, url);
-
-  konke.set('access_token', token.access_token);
-
-  const user = yield konke.user();
-
-  const devices = yield konke.getKList(user.userid);
-
-
-  console.log(devices);
-
-});
-
 function waitingForInput(question){
   return new Promise((accept, reject) => {
     rl.question(question, (answer) => {
@@ -41,3 +21,23 @@ function waitingForInput(question){
     });
   });
 }
+
+(async () => {
+
+  const url = 'https://lsong.org';
+
+  console.log(konke.authorize(url));
+
+  const code = await waitingForInput('Input code here :> ');
+
+  const token = await konke.accessToken(code, url);
+
+  konke.set('access_token', token.access_token);
+
+  const user = await konke.user();
+
+  const devices = await konke.getKList(user.userid);
+
+
+  console.log(devices);
+})();

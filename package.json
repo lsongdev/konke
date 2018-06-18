@@ -1,7 +1,10 @@
 {
   "name": "konke",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "index.js",
+  "bin": {
+    "konke": "./bin/konke.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/song940/konke.git"
