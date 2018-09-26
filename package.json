@@ -1,6 +1,6 @@
 {
   "name": "konke",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -9,7 +9,7 @@
   "author": "Lsong <song940@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "superagent": "^3.5.2"
+    "xttp": "*"
   },
   "description": "konke sdk for node.js",
   "bugs": {

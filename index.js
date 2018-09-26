@@ -1,6 +1,5 @@
-const URI     = require('url');
-const qs      = require('querystring');
-const request = require('superagent');
+const request = require('xttp');
+const qs = require('querystring');
 const EventEmitter = require('events');
 /**
  * KonKe
@@ -18,15 +17,19 @@ class KonKe extends EventEmitter {
    * @return {[type]}          [description]
    */
   static parse(response){
-    response = JSON.parse(response.text);
-    if(response.result != 0){
-      var err = new Error(response.error);
-      err.name = response.error;
-      err.message = response.des;
-      err.response = response;
-      throw err;
-    }
-    return response;
+    return response
+      .json()
+      .then(response => {
+        console.log(response);
+        if(response.result != 0){
+          var err = new Error(response.error);
+          err.name = response.error;
+          err.message = response.des;
+          err.response = response;
+          throw err;
+        }
+        return response;
+      });
   }
   /**
    * [constructor description]
@@ -127,7 +130,7 @@ class KonKe extends EventEmitter {
     const { access_token } = this.options;
     return request
     .post(this.options.api + '/KOAuthDemeter/UserInfo')
-    .set('Authorization', `Bearer ${access_token}`)
+    .header('Authorization', `Bearer ${access_token}`)
     .then(KonKe.parse)
   }
 
@@ -150,7 +153,7 @@ class KonKe extends EventEmitter {
     const { api, access_token } = this.options;
     return request
     .post(`${api}/KOAuthDemeter${path}`)
-    .set('Authorization', `Bearer ${access_token}`)
+    .header('Authorization', `Bearer ${access_token}`)
     .type('json')
     .send(params)
     .then(KonKe.parse)
